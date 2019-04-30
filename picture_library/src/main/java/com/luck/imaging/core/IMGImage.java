@@ -117,7 +117,7 @@ public class IMGImage {
 
     private Matrix M = new Matrix();
 
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
 
     private static final Bitmap DEFAULT_IMAGE;
 
