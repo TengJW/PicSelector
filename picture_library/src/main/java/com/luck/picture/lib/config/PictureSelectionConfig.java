@@ -1,8 +1,10 @@
 package com.luck.picture.lib.config;
 
+import android.graphics.Color;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.StyleRes;
+import android.view.Gravity;
 
 import com.luck.picture.lib.R;
 import com.luck.picture.lib.entity.LocalMedia;
@@ -54,6 +56,7 @@ public final class PictureSelectionConfig implements Parcelable {
     public boolean checkNumMode;
     public boolean openClickSound;
     public boolean enableCrop;
+    public boolean enableEdit;
     public boolean freeStyleCropEnabled;
     public boolean circleDimmedLayer;
     public boolean showCropFrame;
@@ -64,7 +67,11 @@ public final class PictureSelectionConfig implements Parcelable {
     public boolean previewEggs;
     public boolean synOrAsy;
     public boolean isDragFrame;
-    public String  watermark;
+    public String watermark;
+    public int watermarkTextColor;
+    public int watermarkTextSize;
+    public int watermarkBackGroundColor;
+    public int watermarkGravity;
 
     public List<LocalMedia> selectionMedias;
 
@@ -97,6 +104,7 @@ public final class PictureSelectionConfig implements Parcelable {
         checkNumMode = false;
         openClickSound = false;
         enableCrop = false;
+        enableEdit = false;
         freeStyleCropEnabled = false;
         circleDimmedLayer = false;
         showCropFrame = true;
@@ -111,6 +119,10 @@ public final class PictureSelectionConfig implements Parcelable {
         outputCameraPath = "";
         compressSavePath = "";
         watermark = "";
+        watermarkTextColor = Color.WHITE;
+        watermarkTextSize = 15;
+        watermarkBackGroundColor = Color.TRANSPARENT;
+        watermarkGravity =Gravity.BOTTOM|Gravity.RIGHT;
         suffixType = PictureFileUtils.POSTFIX;
         sizeMultiplier = 0.5f;
         selectionMedias = new ArrayList<>();
@@ -141,6 +153,10 @@ public final class PictureSelectionConfig implements Parcelable {
         dest.writeByte(this.camera ? (byte) 1 : (byte) 0);
         dest.writeString(this.outputCameraPath);
         dest.writeString(this.watermark);
+        dest.writeInt(this.watermarkTextColor);
+        dest.writeInt(this.watermarkTextSize);
+        dest.writeInt(this.watermarkBackGroundColor);
+        dest.writeInt(this.watermarkGravity);
         dest.writeString(this.compressSavePath);
         dest.writeString(this.suffixType);
         dest.writeInt(this.themeStyleId);
@@ -171,6 +187,7 @@ public final class PictureSelectionConfig implements Parcelable {
         dest.writeByte(this.checkNumMode ? (byte) 1 : (byte) 0);
         dest.writeByte(this.openClickSound ? (byte) 1 : (byte) 0);
         dest.writeByte(this.enableCrop ? (byte) 1 : (byte) 0);
+        dest.writeByte(this.enableEdit ? (byte) 1 : (byte) 0);
         dest.writeByte(this.freeStyleCropEnabled ? (byte) 1 : (byte) 0);
         dest.writeByte(this.circleDimmedLayer ? (byte) 1 : (byte) 0);
         dest.writeByte(this.showCropFrame ? (byte) 1 : (byte) 0);
@@ -192,6 +209,10 @@ public final class PictureSelectionConfig implements Parcelable {
         this.camera = in.readByte() != 0;
         this.outputCameraPath = in.readString();
         this.watermark = in.readString();
+        this.watermarkTextColor = in.readInt();
+        this.watermarkTextSize = in.readInt();
+        this.watermarkBackGroundColor = in.readInt();
+        this.watermarkGravity = in.readInt();
         this.compressSavePath = in.readString();
         this.suffixType = in.readString();
         this.themeStyleId = in.readInt();
@@ -222,6 +243,7 @@ public final class PictureSelectionConfig implements Parcelable {
         this.checkNumMode = in.readByte() != 0;
         this.openClickSound = in.readByte() != 0;
         this.enableCrop = in.readByte() != 0;
+        this.enableEdit = in.readByte() != 0;
         this.freeStyleCropEnabled = in.readByte() != 0;
         this.circleDimmedLayer = in.readByte() != 0;
         this.showCropFrame = in.readByte() != 0;

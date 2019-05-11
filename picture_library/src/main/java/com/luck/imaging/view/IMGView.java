@@ -59,7 +59,7 @@ public class IMGView extends FrameLayout implements Runnable, ScaleGestureDetect
     private Paint mMosaicPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
     private static final boolean DEBUG = false;
-    private boolean catEnable = false;//是否允许裁剪图片
+    private boolean catEnable = true;//是否允许裁剪图片
 
     {
         // 涂鸦画刷
@@ -355,16 +355,52 @@ public class IMGView extends FrameLayout implements Runnable, ScaleGestureDetect
 
         IMGStickerTextView textView = new IMGStickerTextView(getContext());
 
-        textView.setText(text);
+//        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+//        textView.setLayoutParams(params);
 
+        textView.setText(text);
+        textView.getmTextView().setTextSize(text.getTextsize());
+        textView.getmTextView().setBackgroundColor(text.getBackGroundColor());
+        textView.getmTextView().setPadding(20, 5, 20, 5);
         LayoutParams layoutParams = new LayoutParams(
-                LayoutParams.WRAP_CONTENT,
+                LayoutParams.MATCH_PARENT,
                 LayoutParams.WRAP_CONTENT
         );
 
-        // Center of the drawing window.
-        layoutParams.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
-//        layoutParams.bottomMargin = marginbootom < 0 ? 0 : marginbootom;
+        if (text.getGravity() == (Gravity.LEFT | Gravity.TOP)
+                || text.getGravity() == (Gravity.TOP | Gravity.LEFT)) {//上左
+            textView.getmTextView().setGravity(Gravity.LEFT);
+            layoutParams.gravity = Gravity.TOP;
+        } else if (text.getGravity() == (Gravity.RIGHT | Gravity.TOP)
+                || text.getGravity() == (Gravity.TOP | Gravity.RIGHT)) {//上右
+            textView.getmTextView().setGravity(Gravity.RIGHT);
+            layoutParams.gravity = Gravity.TOP;
+        } else if (text.getGravity() == (Gravity.LEFT | Gravity.BOTTOM)
+                || text.getGravity() == (Gravity.BOTTOM | Gravity.LEFT)) {//下左
+            textView.getmTextView().setGravity(Gravity.LEFT);
+            layoutParams.gravity = Gravity.BOTTOM;
+        } else if (text.getGravity() == (Gravity.RIGHT | Gravity.BOTTOM)
+                || text.getGravity() == (Gravity.BOTTOM | Gravity.RIGHT)) {//下右
+            textView.getmTextView().setGravity(Gravity.RIGHT);
+            layoutParams.gravity = Gravity.BOTTOM;
+        } else if (text.getGravity() == (Gravity.LEFT | Gravity.CENTER)
+                || text.getGravity() == (Gravity.CENTER | Gravity.LEFT)) {//中左
+            textView.getmTextView().setGravity(Gravity.LEFT);
+            layoutParams.gravity = Gravity.CENTER;
+        } else if (text.getGravity() == (Gravity.RIGHT | Gravity.CENTER)
+                || text.getGravity() == (Gravity.CENTER | Gravity.RIGHT)) {//中右
+            textView.getmTextView().setGravity(Gravity.RIGHT);
+            layoutParams.gravity = Gravity.CENTER;
+        } else if (text.getGravity() == Gravity.TOP) {//上中
+            textView.getmTextView().setGravity(Gravity.CENTER);
+            layoutParams.gravity = Gravity.TOP;
+        } else if (text.getGravity() == Gravity.BOTTOM) {//下中
+            textView.getmTextView().setGravity(Gravity.CENTER);
+            layoutParams.gravity = Gravity.BOTTOM;
+        } else {                                                        //中间
+            textView.getmTextView().setGravity(Gravity.CENTER);
+            layoutParams.gravity = Gravity.CENTER;
+        }
 
 
         int scx = getScrollX();

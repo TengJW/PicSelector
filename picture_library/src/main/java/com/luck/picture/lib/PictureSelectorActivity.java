@@ -504,17 +504,17 @@ public class PictureSelectorActivity extends PictureBaseActivity implements View
                     return;
                 }
             }
-            if (config.enableCrop && eqImg) {
+            if (config.enableEdit && eqImg) {
                 if (config.selectionMode == PictureConfig.SINGLE) {
                     originalPath = image.getPath();
-                    startCrop(originalPath);
+                    startEdit(originalPath);
                 } else {
                     // 是图片和选择压缩并且是多张，调用批量压缩
                     ArrayList<String> medias = new ArrayList<>();
                     for (LocalMedia media : images) {
                         medias.add(media.getPath());
                     }
-                    startCrop(medias);
+                    startEdit(medias);
                 }
             } else if (config.isCompress && eqImg) {
                 // 图片才压缩，视频不管
@@ -970,10 +970,10 @@ public class PictureSelectorActivity extends PictureBaseActivity implements View
                     if (config.camera) {
                         // 如果是单选 拍照后直接返回
                         boolean eqImg = toType.startsWith(PictureConfig.IMAGE);
-                        if (config.enableCrop && eqImg) {
-                            // 去裁剪
+                        if (config.enableEdit && eqImg) {
+                            // 去编辑
                             originalPath = cameraPath;
-                            startCrop(cameraPath);
+                            startEdit(cameraPath);
                         } else if (config.isCompress && eqImg) {
                             // 去压缩
                             medias.add(media);

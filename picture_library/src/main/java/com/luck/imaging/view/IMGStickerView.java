@@ -63,6 +63,7 @@ public abstract class IMGStickerView extends ViewGroup implements IMGSticker, Vi
 
     private static final float STROKE_WIDTH = 3f;
 
+
     {
         PAINT = new Paint(Paint.ANTI_ALIAS_FLAG);
         PAINT.setColor(Color.WHITE);
@@ -82,6 +83,7 @@ public abstract class IMGStickerView extends ViewGroup implements IMGSticker, Vi
         super(context, attrs, defStyleAttr);
         onInitialize(context);
     }
+
 
     public void onInitialize(Context context) {
         setBackgroundColor(Color.TRANSPARENT);

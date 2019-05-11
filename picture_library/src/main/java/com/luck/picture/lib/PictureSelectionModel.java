@@ -7,12 +7,10 @@ import android.support.annotation.IntRange;
 import android.support.annotation.StyleRes;
 import android.support.v4.app.Fragment;
 
-import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureSelectionConfig;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.luck.picture.lib.tools.DoubleUtils;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,6 +64,15 @@ public class PictureSelectionModel {
      */
     public PictureSelectionModel enableCrop(boolean enableCrop) {
         selectionConfig.enableCrop = enableCrop;
+        return this;
+    }
+
+    /**
+     * @param enableEdit Do you want to  edit img?
+     * @return
+     */
+    public PictureSelectionModel enableEdit(boolean enableEdit) {
+        selectionConfig.enableEdit = enableEdit;
         return this;
     }
 
@@ -262,7 +269,7 @@ public class PictureSelectionModel {
     }
 
     /**
-     * @param Less than how many KB images are not compressed
+     * @param size Less than how many KB images are not compressed
      * @return
      */
     public PictureSelectionModel minimumCompressSize(int size) {
@@ -352,7 +359,49 @@ public class PictureSelectionModel {
         return this;
     }
 
+    /**
+     * 设置水印文字颜色
+     *
+     * @param color color 0x********   default: 0xffffffff
+     * @return
+     */
+    public PictureSelectionModel setWatermarkTextColor(int color) {
+        selectionConfig.watermarkTextColor = color;
+        return this;
+    }
 
+    /**
+     * 设置水印文字大小
+     *
+     * @param size sp
+     * @return
+     */
+    public PictureSelectionModel setWatermarkTextSize(int size) {
+        selectionConfig.watermarkTextSize = size;
+        return this;
+    }
+
+    /**
+     * 设置水印背景颜色
+     *
+     * @param color color 0x********   default: 0x00000000
+     * @return
+     */
+    public PictureSelectionModel setWatermarkBackGroundColor(int color) {
+        selectionConfig.watermarkBackGroundColor = color;
+        return this;
+    }
+
+    /**
+     * 设置水印位置
+     *
+     * @param gravity Gravity.Top  or    Gravity.Top|Gravity.Left
+     * @return
+     */
+    public PictureSelectionModel setWatermarkGravity(int gravity) {
+        selectionConfig.watermarkGravity = gravity;
+        return this;
+    }
 
 
     /**

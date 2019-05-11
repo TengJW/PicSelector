@@ -29,6 +29,7 @@ public class IMGStickerTextView extends IMGStickerView implements IMGTextEditDia
 
     private static final float TEXT_SIZE_SP = 10f;
 
+
     public IMGStickerTextView(Context context) {
         this(context, null, 0);
     }
@@ -56,8 +57,10 @@ public class IMGStickerTextView extends IMGStickerView implements IMGTextEditDia
         mTextView.setTextSize(mBaseTextSize);
         mTextView.setPadding(PADDING, PADDING, PADDING, PADDING);
         mTextView.setTextColor(Color.WHITE);
-        mTextView.setBackgroundColor(0x785d5b59);
+        return mTextView;
+    }
 
+    public TextView getmTextView() {
         return mTextView;
     }
 
@@ -68,6 +71,7 @@ public class IMGStickerTextView extends IMGStickerView implements IMGTextEditDia
             mTextView.setTextColor(mText.getColor());
         }
     }
+
 
     public IMGText getText() {
         return mText;

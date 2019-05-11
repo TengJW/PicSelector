@@ -406,17 +406,17 @@ public class PicturePreviewActivity extends PictureBaseActivity implements
                     return;
                 }
             }
-            if (config.enableCrop && pictureType.startsWith(PictureConfig.IMAGE)) {
+            if (config.enableEdit && pictureType.startsWith(PictureConfig.IMAGE)) {
                 if (config.selectionMode == PictureConfig.SINGLE) {
                     originalPath = image.getPath();
-                    startCrop(originalPath);
+                    startEdit(originalPath);
                 } else {
                     // 是图片和选择压缩并且是多张，调用批量压缩
                     ArrayList<String> cuts = new ArrayList<>();
                     for (LocalMedia media : selectImages) {
                         cuts.add(media.getPath());
                     }
-                    startCrop(cuts);
+                    startEdit(cuts);
                 }
             } else {
                 onResult(selectImages);

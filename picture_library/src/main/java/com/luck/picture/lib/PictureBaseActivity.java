@@ -35,7 +35,6 @@ import com.luck.picture.lib.tools.PictureFileUtils;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -282,11 +281,11 @@ public class PictureBaseActivity extends FragmentActivity {
     }
 
     /**
-     * 去裁剪
+     * 去编辑
      *
      * @param originalPath
      */
-    protected void startCrop(String originalPath) {
+    protected void startEdit(String originalPath) {
 //        UCrop.Options options = new UCrop.Options();
 //        int toolbarColor = AttrsUtils.getTypeValueColor(this, R.attr.picture_crop_toolbar_bg);
 //        int statusColor = AttrsUtils.getTypeValueColor(this, R.attr.picture_crop_status_color);
@@ -304,8 +303,8 @@ public class PictureBaseActivity extends FragmentActivity {
 //        options.setHideBottomControls(config.hideBottomControls);
 //        options.setFreeStyleCropEnabled(config.freeStyleCropEnabled);
 
-        //裁剪暂存文件
-        File file = new File(getCacheDir(), UUID.randomUUID().toString() + ".jpg");
+        //编辑暂存文件
+        File file = new File(getCacheDir(), System.currentTimeMillis() + ".jpg");
 
         boolean isHttp = PictureMimeType.isHttp(originalPath);
         String imgType = PictureMimeType.getLastImgType(originalPath);
@@ -316,6 +315,11 @@ public class PictureBaseActivity extends FragmentActivity {
         intent.putExtra(IMGEditActivity.EXTRA_IMAGE_URI, uri);
         intent.putExtra(IMGEditActivity.EXTRA_IMAGE_SAVE_PATH, file.getAbsolutePath());
         intent.putExtra(IMGEditActivity.EXTRA_IMAGE_WATERMARK, config.watermark);
+        intent.putExtra(IMGEditActivity.EXTRA_IMAGE_WATERMARKTEXTCOLOR, config.watermarkTextColor);
+        intent.putExtra(IMGEditActivity.EXTRA_IMAGE_WATERMARKTEXTSIZE, config.watermarkTextSize);
+        intent.putExtra(IMGEditActivity.EXTRA_IMAGE_WATERMARKBACKGROUNDCOLOR, config.watermarkBackGroundColor);
+        intent.putExtra(IMGEditActivity.EXTRA_IMAGE_WATERMARKGRAVITY, config.watermarkGravity);
+        intent.putExtra(IMGEditActivity.EXTRA_IMAGE_CROPENABLE, config.enableCrop);
         startActivityForResult(intent, REQ_IMAGE_EDIT);
 
 //        UCrop.of(uri, Uri.fromFile(new File(PictureFileUtils.getDiskCacheDir(this),
@@ -327,12 +331,12 @@ public class PictureBaseActivity extends FragmentActivity {
     }
 
     /**
-     * 多图去裁剪
+     * 多图去编辑
      *
      * @param list
      */
-    protected void startCrop(ArrayList<String> list) {
-        Toast.makeText(getApplicationContext(), "多图批量裁剪功能暂未实现", Toast.LENGTH_SHORT).show();
+    protected void startEdit(ArrayList<String> list) {
+        Toast.makeText(getApplicationContext(), "多图批量编辑功能暂未实现", Toast.LENGTH_SHORT).show();
 //        UCropMulti.Options options = new UCropMulti.Options();
 //        int toolbarColor = AttrsUtils.getTypeValueColor(this, R.attr.picture_crop_toolbar_bg);
 //        int statusColor = AttrsUtils.getTypeValueColor(this, R.attr.picture_crop_status_color);

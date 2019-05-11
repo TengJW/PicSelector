@@ -1,10 +1,15 @@
 package com.luck.imaging;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.view.Gravity;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.RadioGroup;
 import android.widget.ViewSwitcher;
 
@@ -51,10 +56,22 @@ abstract class IMGEditBaseActivity extends Activity implements View.OnClickListe
         if (bitmap != null) {
             setContentView(R.layout.image_edit_activity);
             initViews();
+            try {
+                WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
+                DisplayMetrics outMetrics = new DisplayMetrics();
+                wm.getDefaultDisplay().getMetrics(outMetrics);
+                int windowWidth = outMetrics.widthPixels;
+                float mult = windowWidth / (float) bitmap.getWidth();
+                float newHeight = (float) bitmap.getHeight() * mult;
+                FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, (int) newHeight);
+                params.gravity = Gravity.CENTER;
+                mImgView.setLayoutParams(params);
+            } catch (Exception e) {
+                FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, bitmap.getHeight());
+                params.gravity = Gravity.CENTER;
+                mImgView.setLayoutParams(params);
+            }
             mImgView.setImageBitmap(bitmap);
-            mImgView.setCatEnable(false);
-            findViewById(R.id.rb_mosaic).setVisibility(View.GONE);//马赛克功能
-            findViewById(R.id.btn_clip).setVisibility(View.GONE);//裁剪功能
 
 
 
@@ -64,6 +81,19 @@ abstract class IMGEditBaseActivity extends Activity implements View.OnClickListe
 
     public void onCreated() {
 
+    }
+
+    protected void setCropEnable(boolean enable){
+
+        try {
+            mImgView.setCatEnable(enable);
+            if (!enable){
+                findViewById(R.id.btn_clip).setVisibility(View.GONE);//裁剪功能
+            }
+            findViewById(R.id.rb_mosaic).setVisibility(View.GONE);//马赛克功能
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void initViews() {

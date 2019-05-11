@@ -2,6 +2,7 @@ package com.luck.pictureselector;
 
 import android.Manifest;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.IdRes;
@@ -9,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -144,7 +146,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onComplete() {
             }
         });
-
     }
 
     private GridImageAdapter.onAddPicClickListener onAddPicClickListener = new GridImageAdapter.onAddPicClickListener() {
@@ -159,17 +160,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         .maxSelectNum(maxSelectNum)// 最大图片选择数量
                         .minSelectNum(1)// 最小选择数量
                         .imageSpanCount(4)// 每行显示个数
-                        .selectionMode( PictureConfig.SINGLE)// 多选 or 单选
-                        .previewImage(cb_preview_img.isChecked())// 是否可预览图片
+                        .selectionMode(PictureConfig.SINGLE)// 多选 or 单选
+                        .previewImage(false)// 是否可预览图片
                         .previewVideo(cb_preview_video.isChecked())// 是否可预览视频
                         .enablePreviewAudio(cb_preview_audio.isChecked()) // 是否可播放音频
                         .isCamera(cb_isCamera.isChecked())// 是否显示拍照按钮
                         .isZoomAnim(true)// 图片列表点击 缩放效果 默认true
                         //.imageFormat(PictureMimeType.PNG)// 拍照保存图片格式后缀,默认jpeg
                         //.setOutputCameraPath("/CustomPath")// 自定义拍照保存路径
-                        .enableCrop(true)// 是否裁剪
-                        .compress(false)// 是否压缩
-                        .synOrAsy(false)//同步true或异步false 压缩 默认同步
                         //.compressSavePath(getPath())//压缩图片保存地址
                         //.sizeMultiplier(0.5f)// glide 加载图片大小 0~1之间 如设置 .glideOverride()无效
                         .glideOverride(160, 160)// glide 加载宽高，越小图片列表越流畅，但会影响列表图片浏览的清晰度
@@ -194,7 +192,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         //.videoQuality()// 视频录制质量 0 or 1
                         //.videoSecond()//显示多少秒以内的视频or音频也可适用
                         //.recordVideoSecond()//录制视频秒数 默认60s
+                        .enableEdit(true)// 是否编辑投片
+                        .enableCrop(true)// 是否裁剪
                         .setWatermark("设置水印")
+                        .setWatermarkTextColor(Color.WHITE)
+                        .setWatermarkBackGroundColor(0x785d5b59)
+                        .setWatermarkTextSize(15)
+                        .setWatermarkGravity(Gravity.RIGHT | Gravity.BOTTOM)
                         .forResult(PictureConfig.CHOOSE_REQUEST);//结果回调onActivityResult code
             } else {
                 // 单独拍照
