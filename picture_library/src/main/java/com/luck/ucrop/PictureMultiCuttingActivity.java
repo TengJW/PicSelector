@@ -668,6 +668,9 @@ public class PictureMultiCuttingActivity extends AppCompatActivity {
         ((RelativeLayout) findViewById(R.id.ucrop_mulit_photobox)).addView(mBlockingView);
     }
 
+    /**
+     * 裁剪完成并保存
+     */
     protected void cropAndSaveImage() {
         mBlockingView.setClickable(true);
         mShowLoader = true;

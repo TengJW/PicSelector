@@ -482,16 +482,21 @@ public class IMGImage {
 
     private void onInitialHoming(float width, float height) {
         //如果图片宽度比屏幕宽度小 则拉伸到屏幕宽度
-        if (width > mImage.getWidth()) {
-            float mult = width / (float) mImage.getWidth();
-            float newHeight = (float) mImage.getHeight() * mult;
-            mFrame.set(0, (height - newHeight) / 2,
-                    width, (newHeight + height) / 2);
-        } else {
-            mFrame.set((width - mImage.getWidth()) / 2, (height - mImage.getHeight()) / 2,
-                    (mImage.getWidth() + width) / 2, (mImage.getHeight() + height) / 2);
-        }
-
+//        if (width > mImage.getWidth()) {
+//            float mult = width / (float) mImage.getWidth();
+//            float newHeight = (float) mImage.getHeight() * mult;
+//            mFrame.set(0, (height - newHeight) / 2,
+//                    width, (newHeight + height) / 2);
+//        } else {  //如果图片宽度比屏幕宽度大 则压缩到屏幕宽度
+//            float mult = width / (float) mImage.getWidth();
+//            float newHeight = (float) mImage.getHeight() * mult;
+//            mFrame.set(0, (height - newHeight) / 2,
+//                    width, (newHeight + height) / 2);
+//        }
+        float mult = width / (float) mImage.getWidth();
+        float newHeight = (float) mImage.getHeight() * mult;
+        mFrame.set(0, (height - newHeight) / 2,
+                width, (newHeight + height) / 2);
 
         mClipFrame.set(mFrame);
 //        mClipFrame.set(new RectF(0, 0, width, height));

@@ -13,7 +13,6 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
-import android.widget.Toast;
 
 import com.luck.imaging.IMGEditActivity;
 import com.luck.picture.lib.compress.Luban;
@@ -31,8 +30,10 @@ import com.luck.picture.lib.tools.AttrsUtils;
 import com.luck.picture.lib.tools.DateUtils;
 import com.luck.picture.lib.tools.DoubleUtils;
 import com.luck.picture.lib.tools.PictureFileUtils;
+import com.luck.ucrop.model.CutInfo;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,6 +43,7 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
+import static com.luck.picture.lib.PictureSelectorActivity.REQ_IMAGE_CHOOSE;
 import static com.luck.picture.lib.PictureSelectorActivity.REQ_IMAGE_EDIT;
 
 /**
@@ -303,17 +305,15 @@ public class PictureBaseActivity extends FragmentActivity {
 //        options.setHideBottomControls(config.hideBottomControls);
 //        options.setFreeStyleCropEnabled(config.freeStyleCropEnabled);
 
-        //编辑暂存文件
-        File file = new File(getCacheDir(), System.currentTimeMillis() + ".jpg");
 
-        boolean isHttp = PictureMimeType.isHttp(originalPath);
-        String imgType = PictureMimeType.getLastImgType(originalPath);
-        Uri uri = isHttp ? Uri.parse(originalPath) : Uri.fromFile(new File(originalPath));
-
+//        boolean isHttp = PictureMimeType.isHttp(originalPath);
+//        String imgType = PictureMimeType.getLastImgType(originalPath);
+//        Uri uri = isHttp ? Uri.parse(originalPath) : Uri.fromFile(new File(originalPath));
+        CutInfo cutInfo = new CutInfo(originalPath, false);
 
         Intent intent = new Intent(this, IMGEditActivity.class);
-        intent.putExtra(IMGEditActivity.EXTRA_IMAGE_URI, uri);
-        intent.putExtra(IMGEditActivity.EXTRA_IMAGE_SAVE_PATH, file.getAbsolutePath());
+        intent.putExtra(IMGEditActivity.EXTRA_SELECTION_MODE, PictureConfig.SINGLE);
+        intent.putExtra(IMGEditActivity.EXTRA_IMAGE_URI, cutInfo);
         intent.putExtra(IMGEditActivity.EXTRA_IMAGE_WATERMARK, config.watermark);
         intent.putExtra(IMGEditActivity.EXTRA_IMAGE_WATERMARKTEXTCOLOR, config.watermarkTextColor);
         intent.putExtra(IMGEditActivity.EXTRA_IMAGE_WATERMARKTEXTSIZE, config.watermarkTextSize);
@@ -336,7 +336,40 @@ public class PictureBaseActivity extends FragmentActivity {
      * @param list
      */
     protected void startEdit(ArrayList<String> list) {
-        Toast.makeText(getApplicationContext(), "多图批量编辑功能暂未实现", Toast.LENGTH_SHORT).show();
+
+
+        List<CutInfo> cutInfos = new ArrayList<>();
+
+//        for (String originalPath :
+//                list) {
+//
+//            boolean isHttp = PictureMimeType.isHttp(originalPath);
+//            String imgType = PictureMimeType.getLastImgType(originalPath);
+//            Uri uri = isHttp ? Uri.parse(originalPath) : Uri.fromFile(new File(originalPath));
+//            cutInfos.add(uri);
+//        }
+
+        CutInfo cutInfo;
+        for (String path : list) {
+            cutInfo = new CutInfo(path, false);
+            cutInfos.add(cutInfo);
+        }
+
+
+        Intent intent = new Intent(this, IMGEditActivity.class);
+        intent.putExtra(IMGEditActivity.EXTRA_IMAGE_URI, (Serializable) cutInfos);
+        intent.putExtra(IMGEditActivity.EXTRA_SELECTION_MODE, PictureConfig.MULTIPLE);
+        intent.putExtra(IMGEditActivity.EXTRA_IMAGE_WATERMARK, config.watermark);
+        intent.putExtra(IMGEditActivity.EXTRA_IMAGE_WATERMARKTEXTCOLOR, config.watermarkTextColor);
+        intent.putExtra(IMGEditActivity.EXTRA_IMAGE_WATERMARKTEXTSIZE, config.watermarkTextSize);
+        intent.putExtra(IMGEditActivity.EXTRA_IMAGE_WATERMARKBACKGROUNDCOLOR, config.watermarkBackGroundColor);
+        intent.putExtra(IMGEditActivity.EXTRA_IMAGE_WATERMARKGRAVITY, config.watermarkGravity);
+        intent.putExtra(IMGEditActivity.EXTRA_IMAGE_CROPENABLE, config.enableCrop);
+        startActivityForResult(intent, REQ_IMAGE_CHOOSE );
+//        startActivityForResult(intent, REQUEST_MULTI_CROP);
+
+
+//        Toast.makeText(getApplicationContext(), "多图批量编辑功能暂未实现", Toast.LENGTH_SHORT).show();
 //        UCropMulti.Options options = new UCropMulti.Options();
 //        int toolbarColor = AttrsUtils.getTypeValueColor(this, R.attr.picture_crop_toolbar_bg);
 //        int statusColor = AttrsUtils.getTypeValueColor(this, R.attr.picture_crop_status_color);

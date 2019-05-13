@@ -165,7 +165,7 @@ public class GridImageAdapter extends
             Log.i("原图地址::", media.getPath());
             int pictureType = PictureMimeType.isPictureType(media.getPictureType());
             if (media.isCut()) {
-                Log.i("裁剪地址::", media.getCutPath());
+//                Log.i("裁剪地址::", media.getCutPath());
             }
             long duration = media.getDuration();
             viewHolder.tv_duration.setVisibility(pictureType == PictureConfig.TYPE_VIDEO

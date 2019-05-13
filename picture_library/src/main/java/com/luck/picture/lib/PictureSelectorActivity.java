@@ -922,7 +922,7 @@ public class PictureSelectorActivity extends PictureBaseActivity implements View
                         handlerResult(medias);
                     }
                     break;
-                case UCropMulti.REQUEST_MULTI_CROP: //多张裁剪后回调
+                case REQ_IMAGE_CHOOSE: //多张裁剪后回调
                     List<CutInfo> mCuts = UCropMulti.getOutput(data);
                     for (CutInfo c : mCuts) {
                         media = new LocalMedia();

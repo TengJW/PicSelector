@@ -3,8 +3,11 @@ package com.luck.imaging;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.View;
@@ -18,6 +21,14 @@ import com.luck.imaging.core.IMGText;
 import com.luck.imaging.view.IMGColorGroup;
 import com.luck.imaging.view.IMGView;
 import com.luck.picture.lib.R;
+import com.luck.picture.lib.config.PictureConfig;
+import com.luck.ucrop.PicturePhotoGalleryAdapter;
+import com.luck.ucrop.model.CutInfo;
+
+import java.util.List;
+
+import static com.luck.imaging.IMGEditActivity.EXTRA_IMAGE_URI;
+import static com.luck.imaging.IMGEditActivity.EXTRA_SELECTION_MODE;
 
 /**
  * Created by felix on 2017/12/5 下午3:08.
@@ -49,9 +60,37 @@ abstract class IMGEditBaseActivity extends Activity implements View.OnClickListe
 
     public static final int OP_SUB_MOSAIC = 1;
 
+    protected RecyclerView imgsRcv;
+    //    protected Uri uri;
+//    protected List<Uri> uris;
+    protected List<CutInfo> cutInfos;
+    protected CutInfo cutInfo;
+    protected int selectionMode;
+    protected PicturePhotoGalleryAdapter adapter;
+    protected int cutIndex = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Intent intent = getIntent();
+        if (intent == null) {
+            finish();
+        }
+        selectionMode = intent.getIntExtra(EXTRA_SELECTION_MODE, PictureConfig.SINGLE);
+        if (selectionMode == PictureConfig.SINGLE) {
+            cutInfo = (CutInfo) intent.getSerializableExtra(EXTRA_IMAGE_URI);
+            setCropData();
+        } else {
+//            uris =(List<Uri>) intent.getParcelableExtra(EXTRA_IMAGE_URI);
+//            uri=uris.get(cutIndex);
+
+            cutInfos = (List<CutInfo>) intent.getSerializableExtra(EXTRA_IMAGE_URI);
+            cutInfo = cutInfos.get(cutIndex);
+            setCropData();
+        }
+    }
+
+    protected void setCropData() {
         Bitmap bitmap = getBitmap();
         if (bitmap != null) {
             setContentView(R.layout.image_edit_activity);
@@ -72,22 +111,28 @@ abstract class IMGEditBaseActivity extends Activity implements View.OnClickListe
                 mImgView.setLayoutParams(params);
             }
             mImgView.setImageBitmap(bitmap);
-
-
-
             onCreated();
+            // 预览图 一页5个,裁剪到第6个的时候滚动到最新位置，不然预览图片看不到
+            try {
+                if (cutIndex >= 5) {
+                    imgsRcv.scrollToPosition(cutIndex);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         } else finish();
     }
+
 
     public void onCreated() {
 
     }
 
-    protected void setCropEnable(boolean enable){
+    protected void setCropEnable(boolean enable) {
 
         try {
             mImgView.setCatEnable(enable);
-            if (!enable){
+            if (!enable) {
                 findViewById(R.id.btn_clip).setVisibility(View.GONE);//裁剪功能
             }
             findViewById(R.id.rb_mosaic).setVisibility(View.GONE);//马赛克功能
@@ -107,7 +152,33 @@ abstract class IMGEditBaseActivity extends Activity implements View.OnClickListe
         mColorGroup.setOnCheckedChangeListener(this);
 
         mLayoutOpSub = findViewById(R.id.layout_op_sub);
+
+//        imgsRcv = findViewById(R.id.imgsRcv);
+//        imgsRcv = (RecyclerView) findViewById(R.id.recyclerView);
+//        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
+//        mLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+//        imgsRcv.setLayoutManager(mLayoutManager);
+//        adapter = new PicturePhotoGalleryAdapter(this, uris);
+//        imgsRcv.setAdapter(adapter);
+
+        imgsRcv = (RecyclerView) findViewById(R.id.imgsRcv);
+        if (selectionMode == PictureConfig.SINGLE) {
+            imgsRcv.setVisibility(View.GONE);
+        } else {
+            imgsRcv.setVisibility(View.VISIBLE);
+            LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
+            mLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+            imgsRcv.setLayoutManager(mLayoutManager);
+            for (CutInfo info : cutInfos) {
+                info.setCut(false);
+            }
+            cutInfos.get(cutIndex).setCut(true);
+            adapter = new PicturePhotoGalleryAdapter(this, cutInfos);
+            imgsRcv.setAdapter(adapter);
+        }
+
     }
+
 
     @Override
     public void onClick(View v) {

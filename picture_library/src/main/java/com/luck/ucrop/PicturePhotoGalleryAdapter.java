@@ -80,9 +80,9 @@ public class PicturePhotoGalleryAdapter extends RecyclerView.Adapter<PicturePhot
         }
 
         RequestOptions options = new RequestOptions()
-                .placeholder(R.color.ucrop_color_grey)
+                .placeholder(R.color.ucrop_color_widget)
                 .centerCrop()
-                .diskCacheStrategy(DiskCacheStrategy.ALL);
+                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC);
 
         Glide.with(context)
                 .load(path)

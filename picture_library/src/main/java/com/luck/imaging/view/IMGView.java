@@ -274,6 +274,7 @@ public class IMGView extends FrameLayout implements Runnable, ScaleGestureDetect
 
     public Bitmap saveBitmap() {
         mImage.stickAll();
+        mImage.getFrame().set(mImage.getClipFrame());
 
         float scale = 1f / mImage.getScale();
 
@@ -288,8 +289,11 @@ public class IMGView extends FrameLayout implements Runnable, ScaleGestureDetect
         m.setScale(scale, scale, frame.left, frame.top);
         m.mapRect(frame);
 
-        Bitmap bitmap = Bitmap.createBitmap(Math.round(frame.width()),
-                Math.round(frame.height()), Bitmap.Config.ARGB_8888);
+        int width = Math.round(frame.width());
+        int height = Math.round(frame.height());
+
+        Bitmap bitmap = Bitmap.createBitmap(width,
+                height, Bitmap.Config.ARGB_8888);
 
         Canvas canvas = new Canvas(bitmap);
 
@@ -355,8 +359,6 @@ public class IMGView extends FrameLayout implements Runnable, ScaleGestureDetect
 
         IMGStickerTextView textView = new IMGStickerTextView(getContext());
 
-//        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-//        textView.setLayoutParams(params);
 
         textView.setText(text);
         textView.getmTextView().setTextSize(text.getTextsize());
@@ -366,7 +368,6 @@ public class IMGView extends FrameLayout implements Runnable, ScaleGestureDetect
                 LayoutParams.MATCH_PARENT,
                 LayoutParams.WRAP_CONTENT
         );
-
         if (text.getGravity() == (Gravity.LEFT | Gravity.TOP)
                 || text.getGravity() == (Gravity.TOP | Gravity.LEFT)) {//上左
             textView.getmTextView().setGravity(Gravity.LEFT);

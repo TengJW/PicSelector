@@ -160,7 +160,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         .maxSelectNum(maxSelectNum)// 最大图片选择数量
                         .minSelectNum(1)// 最小选择数量
                         .imageSpanCount(4)// 每行显示个数
-                        .selectionMode(PictureConfig.SINGLE)// 多选 or 单选
+                        .selectionMode(cb_choose_mode.isChecked() ? PictureConfig.SINGLE : PictureConfig.MULTIPLE)// 多选 or 单选
                         .previewImage(false)// 是否可预览图片
                         .previewVideo(cb_preview_video.isChecked())// 是否可预览视频
                         .enablePreviewAudio(cb_preview_audio.isChecked()) // 是否可播放音频
@@ -193,7 +193,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         //.videoSecond()//显示多少秒以内的视频or音频也可适用
                         //.recordVideoSecond()//录制视频秒数 默认60s
                         .enableEdit(true)// 是否编辑投片
-                        .enableCrop(true)// 是否裁剪
+                        .enableCrop(false)// 是否裁剪
                         .setWatermark("设置水印")
                         .setWatermarkTextColor(Color.WHITE)
                         .setWatermarkBackGroundColor(0x785d5b59)
