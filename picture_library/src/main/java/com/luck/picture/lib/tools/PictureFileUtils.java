@@ -84,8 +84,9 @@ public class PictureFileUtils {
                 Environment.getExternalStorageDirectory() : context.getCacheDir();
 
         File folderDir = new File(rootDir.getAbsolutePath() + parentPath);
-        if (!folderDir.exists() && folderDir.mkdirs()) {
-
+        if (!folderDir.exists()) {
+            boolean ismk = folderDir.mkdirs();
+            Log.d("ismk", "" + ismk);
         }
 
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.CHINA).format(new Date());
